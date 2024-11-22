@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dormitory Management</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+    <div class="container" style="text-align: center;">
+        <h1>Welcome to Dormitory Management System</h1>
+        <h2>Easily manage dormitory blocks, rooms, and residents</h2>
+        
+        <div class="navigation">
+            <a th:href="@{/blocks}" class="button">Blocks</a>
+            <a th:href="@{/rooms}" class="button">Rooms</a>
+            <a th:href="@{/residents}" class="button">Residents</a>
+        </div>
+    </div>
+</body>
+</html>

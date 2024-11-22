@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Block</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Block</h1>
+
+        <form th:action="@{/blocks/update/{id}(id=${block.blockId})}" th:object="${block}" method="post" class="form-container">
+            <input type="hidden" th:field="*{blockId}" />
+
+            <label for="blockName">Block Name:</label>
+            <input type="text" id="blockName" th:field="*{blockName}" required />
+            <div th:if="${#fields.hasErrors('blockName')}" th:errors="*{blockName}" class="error"></div>
+
+            <button type="submit" class="button">Update</button>
+        </form>
+        <a href="/blocks" class="button back">Back to Blocks</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Blocks</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+    <div class="container">
+        <h1>Blocks</h1>
+        <a href="/blocks/add" class="button">Add Block</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Block Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="block : ${blocks}">
+                    <td th:text="${block.blockId}"></td>
+                    <td th:text="${block.blockName}"></td>
+                    <td>
+                        <a th:href="@{/blocks/edit/{id}(id=${block.blockId})}" class="button edit">Edit</a>
+                        <a th:href="@{/blocks/delete/{id}(id=${block.blockId})}" class="button delete">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="/home" class="button back">Back to Home</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Residents</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+    <div class="container">
+        <h1>Residents</h1>
+        <a href="/residents/add" class="button">Add Resident</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Room</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="resident : ${residents}">
+                    <td th:text="${resident.residentId}"></td>
+                    <td th:text="${resident.fullName}"></td>
+                    <td th:text="${resident.room.roomNumber}"></td>
+                    <td>
+                        <a th:href="@{/residents/edit/{id}(id=${resident.residentId})}" class="button edit">Edit</a>
+                        <a th:href="@{/residents/delete/{id}(id=${resident.residentId})}" class="button delete">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="/home" class="button back">Back Home</a>
+    </div>
+</body>
+</html>

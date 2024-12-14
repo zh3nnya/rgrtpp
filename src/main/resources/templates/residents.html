@@ -6,15 +6,23 @@
 </head>
 <body>
     <div class="container">
-        <h1>Residents</h1>
-        <a href="/residents/add" class="button">Add Resident</a>
-        <table>
+        <h1 class="page-title">Residents</h1>
+        
+        <div th:if="${isAdmin}">
+            <a href="/residents/add" class="button add-button">Add Resident</a>
+        </div>
+        
+        <div th:if="${!isAdmin}" class="warning-message">
+            <p style= "color: #b61d1d;" >Note: You are in view-only mode. Admin rights are required for modifications.</p>
+        </div>
+        
+        <table class="table">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
                     <th>Room</th>
-                    <th>Actions</th>
+                    <th th:if="${isAdmin}">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,14 +30,15 @@
                     <td th:text="${resident.residentId}"></td>
                     <td th:text="${resident.fullName}"></td>
                     <td th:text="${resident.room.roomNumber}"></td>
-                    <td>
+                    <td th:if="${isAdmin}">
                         <a th:href="@{/residents/edit/{id}(id=${resident.residentId})}" class="button edit">Edit</a>
                         <a th:href="@{/residents/delete/{id}(id=${resident.residentId})}" class="button delete">Delete</a>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <a href="/home" class="button back">Back Home</a>
+        
+        <a href="/home" class="button back">Back to Home</a>
     </div>
 </body>
 </html>

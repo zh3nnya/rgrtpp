@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.ColumnMapRowMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.Model;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,24 +28,35 @@ public class RoomController {
     @Autowired
     private BlockService blockService;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private boolean isAdmin(UserDetails userDetails) {
+        return userDetails != null && userDetails.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+    }
 
     @GetMapping
-    public String listRooms(Model model) {
+    public String listRooms(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         model.addAttribute("rooms", roomService.getAllRooms());
+        model.addAttribute("isAdmin", isAdmin(userDetails));
         return "rooms";
     }
 
     @GetMapping("/add")
-    public String addRoomForm(Model model) {
+    public String addRoomForm(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        if (!isAdmin(userDetails)) {
+            return "access-denied";
+        }
         model.addAttribute("room", new Room());
         model.addAttribute("blocks", blockService.getAllBlocks());
         return "add-room";
     }
 
     @PostMapping("/add")
-    public String addRoom(@Valid @ModelAttribute("room") Room room, BindingResult result, Model model) {
+    public String addRoom(@AuthenticationPrincipal UserDetails userDetails,
+                          @Valid @ModelAttribute("room") Room room,
+                          BindingResult result, Model model) {
+        if (!isAdmin(userDetails)) {
+            return "access-denied";
+        }
         if (result.hasErrors()) {
             model.addAttribute("blocks", blockService.getAllBlocks());
             return "add-room";
@@ -53,7 +66,12 @@ public class RoomController {
     }
 
     @GetMapping("/edit/{id}")
-    public String editRoomForm(@PathVariable("id") Integer id, Model model) {
+    public String editRoomForm(@AuthenticationPrincipal UserDetails userDetails,
+                               @PathVariable("id") Integer id,
+                               Model model) {
+        if (!isAdmin(userDetails)) {
+            return "access-denied";
+        }
         Room room = roomService.findRoomById(id).orElse(null);
         if (room != null) {
             model.addAttribute("room", room);
@@ -65,8 +83,13 @@ public class RoomController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateRoom(@PathVariable("id") Integer id, @Valid @ModelAttribute("room") Room room,
+    public String updateRoom(@AuthenticationPrincipal UserDetails userDetails,
+                             @PathVariable("id") Integer id,
+                             @Valid @ModelAttribute("room") Room room,
                              BindingResult result, Model model) {
+        if (!isAdmin(userDetails)) {
+            return "access-denied";
+        }
         if (result.hasErrors()) {
             model.addAttribute("blocks", blockService.getAllBlocks());
             return "edit-room";
@@ -77,28 +100,28 @@ public class RoomController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteRoom(@PathVariable("id") Integer id) {
+    public String deleteRoom(@AuthenticationPrincipal UserDetails userDetails,
+                             @PathVariable("id") Integer id) {
+        if (!isAdmin(userDetails)) {
+            return "access-denied";
+        }
         roomService.deleteRoom(id);
         return "redirect:/rooms";
     }
 
-    @PostMapping("/execute-query")
-    public String executeQuery(@RequestParam("sqlQuery") String sqlQuery, Model model) {
-        try {
-            List<Map<String, Object>> result = jdbcTemplate.query(sqlQuery, new ColumnMapRowMapper());
-            if (!result.isEmpty()) {
-                model.addAttribute("queryResult", Map.of(
-                    "columns", result.get(0).keySet(),
-                    "rows", result.stream().map(Map::values).toList()
-                ));
-            } else {
-                model.addAttribute("queryResult", null);
-            }
-        } catch (Exception e) {
-            model.addAttribute("errorMessage", "Error executing query: " + e.getMessage());
-        }
-        model.addAttribute("rooms", roomService.getAllRooms());
-        return "rooms";
+    public RoomService getRoomService() {
+        return roomService;
     }
 
+    public void setRoomService(RoomService roomService) {
+        this.roomService = roomService;
+    }
+
+    public BlockService getBlockService() {
+        return blockService;
+    }
+
+    public void setBlockService(BlockService blockService) {
+        this.blockService = blockService;
+    }
 }

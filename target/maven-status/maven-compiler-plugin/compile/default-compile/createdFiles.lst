@@ -6,9 +6,15 @@ com\tpp\tpplab3\controllers\RoomController.class
 com\tpp\tpplab3\models\Block.class
 com\tpp\tpplab3\repository\BlockRepository.class
 com\tpp\tpplab3\controllers\BlockController.class
+com\tpp\tpplab3\service\CustomUserDetailsService.class
 com\tpp\tpplab3\Tpplab3Application.class
 com\tpp\tpplab3\models\Resident.class
 com\tpp\tpplab3\service\ResidentService.class
+com\tpp\tpplab3\models\User.class
+com\tpp\tpplab3\repository\UserRepository.class
 com\tpp\tpplab3\service\BlockService.class
 com\tpp\tpplab3\repository\RoomRepository.class
+com\tpp\tpplab3\controllers\ErrorController.class
 com\tpp\tpplab3\repository\ResidentRepository.class
+com\tpp\tpplab3\repository\SecurityConfig.class
+com\tpp\tpplab3\controllers\AuthController.class

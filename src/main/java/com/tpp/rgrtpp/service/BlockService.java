@@ -1,7 +1,7 @@
-package com.tpp.tpplab3.service;
+package com.tpp.rgrtpp.service;
 
-import com.tpp.tpplab3.models.Block;
-import com.tpp.tpplab3.repository.BlockRepository;
+import com.tpp.rgrtpp.models.Block;
+import com.tpp.rgrtpp.repository.BlockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

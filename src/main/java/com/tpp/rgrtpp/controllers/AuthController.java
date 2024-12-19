@@ -2,6 +2,9 @@ package com.tpp.rgrtpp.controllers;
 
 import com.tpp.rgrtpp.models.User;
 import com.tpp.rgrtpp.repository.UserRepository;
+
+import org.springframework.ui.Model; 
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +31,11 @@ public class AuthController {
         return "register";
     }
 
+    @GetMapping("/login-error")
+    public String loginError(Model model) {
+        model.addAttribute("loginError", true);
+        return "login-error";
+    }
     @PostMapping("/register")
     public String register(String username, String password, String role) {
         User user = new User();

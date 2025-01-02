@@ -22,7 +22,7 @@ This project is a dormitory management system that allows users to work with a d
 Before you begin, make sure you have the following components installed on your system:
 - **MySQL**
 - **IDE**
-- 
+   
 ## Setup Instructions
 
 1. Clone the repository:

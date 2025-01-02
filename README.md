@@ -1,4 +1,4 @@
-# RGRTPP Project
+# Dormintory Project
 
 This project is a dormitory management system that allows users to work with a database to add, edit, and delete data. The application is designed to simplify data processing and provide role-based access for better management.
 
